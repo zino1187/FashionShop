@@ -1,3 +1,5 @@
+<%@page import="com.fashion.common.Formatter"%>
+<%@page import="com.fashion.model.domain.Product"%>
 <%@page import="com.fashion.model.repository.ProductDAO"%>
 <%@page import="com.fashion.model.domain.Subcategory"%>
 <%@page import="com.fashion.model.repository.SubcategoryDAO"%>
@@ -6,7 +8,7 @@
 <%@ include file="/inc/header.jsp"%>
 <%
 	int product_id=Integer.parseInt(request.getParameter("product_id"));
-	productDAO.select(product_id);	
+	Product product=productDAO.select(product_id);	
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,6 +16,39 @@
 <%@ include file="/inc/head.jsp" %>
 <link rel="stylesheet" type="text/css" href="styles/product.css">
 <link rel="stylesheet" type="text/css" href="styles/product_responsive.css">
+<script>
+$(function(){
+	$("#product_form button").click(function(){
+		addCart();
+	});	
+});
+
+//비동기로 장바구니에 담기!!
+function addCart(){
+	$.ajax({
+		url:"/add_cart.jsp",
+		type:"post",
+		data:{
+			product_id:<%=product_id%>,				
+			ea:1
+		},
+		success:function(result){
+			if(result==1){
+				if(confirm("장바구니에 상품이 담겼습니다\n장바구니를 확인할까요?")){
+					$(location).attr("href","cart.jsp?topcategory_id=<%=topcategory_id%>");
+				}
+			}else{
+				console.log("등록되지 않았습니다");
+			}
+		},
+		error:function(result){
+			
+		}
+		
+	});		
+}
+
+</script>
 </head>
 <body>
 
@@ -322,7 +357,7 @@
 								<div class="product_content_inner">
 									<div class="product_image_row d-flex flex-md-row flex-column align-items-md-end align-items-start justify-content-start">
 										<div class="product_image_1 product_image">
-											<img src="images/product_single_1.jpg" alt="">
+											<img src="/data/<%=product.getFilename() %>" alt="">
 										</div>
 										<% %>											
 									</div>
@@ -330,8 +365,8 @@
 							</div>
 							<div class="product_sidebar order-lg-2 order-1">
 								<form action="#" id="product_form" class="product_form">
-									<div class="product_name">Brown Shoulder Bag</div>
-									<div class="product_price">$19.50</div>
+									<div class="product_name"><%=product.getProduct_name() %></div>
+									<div class="product_price"><%=Formatter.getCurrency(product.getPrice()) %></div>
 									<div class="product_color">Color: <span>Brown</span></div>
 									<div class="product_size">
 										<div class="product_size_title">Select Size</div>
@@ -364,7 +399,7 @@
 											</ul>
 										</div>
 									</div>
-									<button class="cart_button trans_200">add to cart</button>
+									<button type="button" class="cart_button trans_200">add to cart</button>
 									<div class="similar_products_button trans_200"><a href="categories.html">see similar products</a></div>
 								</form>
 								<div class="product_links">
@@ -590,19 +625,5 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 </div>
 
-<script src="js/jquery-3.2.1.min.js"></script>
-<script src="styles/bootstrap-4.1.3/popper.js"></script>
-<script src="styles/bootstrap-4.1.3/bootstrap.min.js"></script>
-<script src="plugins/greensock/TweenMax.min.js"></script>
-<script src="plugins/greensock/TimelineMax.min.js"></script>
-<script src="plugins/scrollmagic/ScrollMagic.min.js"></script>
-<script src="plugins/greensock/animation.gsap.min.js"></script>
-<script src="plugins/greensock/ScrollToPlugin.min.js"></script>
-<script src="plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
-<script src="plugins/easing/easing.js"></script>
-<script src="plugins/parallax-js-master/parallax.min.js"></script>
-<script src="plugins/Isotope/isotope.pkgd.min.js"></script>
-<script src="plugins/Isotope/fitcolumns.js"></script>
-<script src="js/product.js"></script>
 </body>
 </html>
