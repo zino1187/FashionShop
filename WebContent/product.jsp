@@ -1,7 +1,13 @@
+<%@page import="com.fashion.model.repository.ProductDAO"%>
 <%@page import="com.fashion.model.domain.Subcategory"%>
 <%@page import="com.fashion.model.repository.SubcategoryDAO"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%! ProductDAO productDAO=new ProductDAO();%>
 <%@ include file="/inc/header.jsp"%>
+<%
+	int product_id=Integer.parseInt(request.getParameter("product_id"));
+	productDAO.select(product_id);	
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -318,14 +324,7 @@
 										<div class="product_image_1 product_image">
 											<img src="images/product_single_1.jpg" alt="">
 										</div>
-										<div class="product_image_2 product_image"><img src="images/product_single_2.jpg" alt=""></div>
-									</div>
-									<div class="product_image_row">
-										<div class="product_image_3 product_image"><img src="images/product_single_3.jpg" alt=""></div>
-									</div>
-									<div class="product_image_row d-flex flex-md-row flex-column align-items-start justify-content-start">
-										<div class="product_image_4 product_image"><img src="images/product_single_4.jpg" alt=""></div>
-										<div class="product_image_5 product_image"><img src="images/product_single_5.jpg" alt=""></div>
+										<% %>											
 									</div>
 								</div>
 							</div>

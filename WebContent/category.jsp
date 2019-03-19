@@ -347,11 +347,14 @@
 							<div class="product grid-item hot">
 								<div class="product_inner">
 									<div class="product_image">
-										<img src="/data/<%=product.getFilename()%>" alt="">
+										<a href="product.jsp?topcategory_id=<%=topcategory_id%>&subcategory_id=<%=product.getSubcategory().getSubcategory_id()%>&product_id=<%=product.getProduct_id()%>">
+											<img src="/data/<%=product.getFilename()%>" alt="">
+										</a>
+										
 										<div class="product_tag">hot</div>
 									</div>
 									<div class="product_content text-center">
-										<div class="product_title"><a href="product.jsp?topcategory_id=<%=topcategory_id%>&subcategory_id=<%=product.getSubcategory().getSubcategory_id()%>"><%=product.getProduct_name() %></a></div>
+										<div class="product_title"><%=product.getProduct_name() %></div>
 										<div class="product_price"><%=Formatter.getCurrency(product.getPrice()) %></div>
 										<div class="product_button ml-auto mr-auto trans_200"><a href="#">add to cart</a></div>
 									</div>

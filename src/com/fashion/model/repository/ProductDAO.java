@@ -36,6 +36,13 @@ public class ProductDAO {
 		return list;
 	}
 	
+	//상품 한건 가져오기 
+	public Product select(int product_id) {
+		SqlSession sqlSession=manager.getSqlSession();
+		Product product=sqlSession.selectOne("Product.select", product_id);
+		manager.release(sqlSession);
+		return product;		
+	}
 }
 
 
