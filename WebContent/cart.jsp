@@ -1,3 +1,4 @@
+<%@page import="com.fashion.common.Formatter"%>
 <%@page import="com.fashion.model.domain.Cart"%>
 <%@page import="com.fashion.model.repository.CartDAO"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
@@ -12,7 +13,35 @@
 <%@ include file="/inc/head.jsp" %>
 <link rel="stylesheet" type="text/css" href="styles/cart.css">
 <link rel="stylesheet" type="text/css" href="styles/cart_responsive.css">
+<script>
+$(function(){
+	alert($("input[type='checkbox']").length);
+});
+
+function delCart(){
+	//체크박스를 체크했는지 검증하자!! 
+	var arr=$("input[type='checkbox']");
+	var count=0;
+	for(var i=0;i<arr.length;i++){
+		if($(arr[i]).is(":checked")){
+			count++;
+		}
+	}
+	if(count <=0){ //아무것도 체크하지 않은 유저임..
+		alert("삭제하실 아이템을 선택하세요!!!");
+		return;
+	}
+	if(confirm("삭제하시겠습니까?")){
+		$("#cart-form").attr({
+			"method":"post",
+			"action":"del_cart.jsp"
+		});
+		$("#cart-form").submit();
+	}
+}
+</script>
 </head>
+
 <body>
 
 <div class="super_container">
@@ -275,7 +304,7 @@
 	</div>
 
 	<!-- Cart -->
-
+	<form id="cart-form">
 	<div class="cart_section">
 		<div class="section_container">
 			<div class="container">
@@ -303,19 +332,20 @@
 
 									<!-- Cart Item -->
 									<%for(int i=0;i<cartList.size();i++){ %>
+									<%Cart cart=cartList.get(i); %>
 									<li class="cart_item item_list d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-start">
 										<div class="product d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-start">
 											<div class="product_name">
-												<input type="checkbox" style="width:50px;"/>
+												<input type="checkbox" style="width:50px;" name="cart_id" value="<%=cart.getCart_id()%>"/>
 											</div>
 											<div>
-												<div class="product_image"><img src="images/cart_1.jpg" alt=""></div>
+												<div class="product_image"><img src="/data/<%=cart.getProduct().getFilename() %>" alt=""></div>
 											</div>
-											<div class="product_name"><a href="product.html">Brown Shoulder Bag</a></div>
+											<div class="product_name"><a href="product.html"><%=cart.getProduct().getProduct_name() %></a></div>
 										</div>
 										<div class="product_color text-lg-center product_text"><span>Color: </span>Brown</div>
 										<div class="product_size text-lg-center product_text"><span>Size: </span>One Size</div>
-										<div class="product_price text-lg-center product_text"><span>Price: </span>$19.50</div>
+										<div class="product_price text-lg-center product_text"><span>Price: </span><%=Formatter.getCurrency(cart.getProduct().getPrice()) %></div>
 										<div class="product_quantity_container">
 											<div class="product_quantity ml-lg-auto mr-lg-auto text-center">
 												<span class="product_text product_num">1</span>
@@ -334,7 +364,7 @@
 							<div class="cart_buttons d-flex flex-row align-items-start justify-content-start">
 								<div class="cart_buttons_inner ml-auto d-flex flex-row align-items-start justify-content-start flex-wrap">
 									<div class="button button_continue trans_200"><a href="categories.html">continue shopping</a></div>
-									<div class="button button_clear trans_200"><a href="categories.html">clear cart</a></div>
+									<div class="button button_clear trans_200"><a href="javascript:delCart()">clear cart</a></div>
 									<div class="button button_update trans_200"><a href="categories.html">update cart</a></div>
 								</div>
 							</div>
@@ -343,6 +373,7 @@
 				</div>
 			</div>
 		</div>
+		</form>
 
 		<div class="section_container cart_extra_container">
 			<div class="container">
@@ -351,44 +382,7 @@
 					<!-- Shipping & Delivery -->
 					<div class="col-xxl-6">
 						<div class="cart_extra cart_extra_1">
-							<div class="cart_extra_content cart_extra_coupon">
-								<div class="cart_extra_title">Coupon code</div>
-								<div class="coupon_form_container">
-									<form action="#" id="coupon_form" class="coupon_form">
-										<input type="text" class="coupon_input" required="required">
-										<button class="coupon_button">apply code</button>
-									</form>
-								</div>
-								<div class="shipping">
-									<div class="cart_extra_title">Shipping Method</div>
-									<ul>
-										<li class="shipping_option d-flex flex-row align-items-center justify-content-start">
-											<label class="radio_container">
-												<input type="radio" id="radio_1" name="shipping_radio" class="shipping_radio">
-												<span class="radio_mark"></span>
-												<span class="radio_text">Next day delivery</span>
-											</label>
-											<div class="shipping_price ml-auto">$4.99</div>
-										</li>
-										<li class="shipping_option d-flex flex-row align-items-center justify-content-start">
-											<label class="radio_container">
-												<input type="radio" id="radio_2" name="shipping_radio" class="shipping_radio">
-												<span class="radio_mark"></span>
-												<span class="radio_text">Standard delivery</span>
-											</label>
-											<div class="shipping_price ml-auto">$1.99</div>
-										</li>
-										<li class="shipping_option d-flex flex-row align-items-center justify-content-start">
-											<label class="radio_container">
-												<input type="radio" id="radio_3" name="shipping_radio" class="shipping_radio" checked>
-												<span class="radio_mark"></span>
-												<span class="radio_text">Personal Pickup</span>
-											</label>
-											<div class="shipping_price ml-auto">Free</div>
-										</li>
-									</ul>
-								</div>
-							</div>
+							
 						</div>
 					</div>
 
