@@ -7,6 +7,9 @@
 		<typeAlias type="com.fashion.model.domain.Admin" 			alias="Admin"/>
 		<typeAlias type="com.fashion.model.domain.Topcategory" 	alias="Topcategory"/>
 		<typeAlias type="com.fashion.model.domain.Subcategory" 	alias="Subcategory"/>
+		<typeAlias type="com.fashion.model.domain.Product" 			alias="Product"/>
+		<typeAlias type="test.Dept" 												alias="Dept"/>
+		<typeAlias type="test.Emp" 												alias="Emp"/>
 	</typeAliases>
 	
 	<environments default="development">
@@ -21,6 +24,9 @@
 		<mapper resource="com/fashion/mybatis/mapper/AdminMapper.xml" />
 		<mapper resource="com/fashion/mybatis/mapper/TopcategoryMapper.xml" />
 		<mapper resource="com/fashion/mybatis/mapper/SubcategoryMapper.xml" />
+		<mapper resource="com/fashion/mybatis/mapper/ProductMapper.xml" />
+		<mapper resource="com/fashion/mybatis/mapper/DeptMapper.xml" />
+		<mapper resource="com/fashion/mybatis/mapper/EmpMapper.xml" />
 	</mappers>
 </configuration>
 

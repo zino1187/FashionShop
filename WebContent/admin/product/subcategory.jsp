@@ -16,6 +16,7 @@
 		sb.append("\"subcategory_id\":"+subcategory.getSubcategory_id()+",");
 		sb.append("\"topcategory_id\":"+subcategory.getTopcategory_id()+",");
 		sb.append("\"sub_name\":\""+subcategory.getSub_name()+"\"");
+		
 		if(i<list.size()-1){
 			sb.append("},");
 		}else{

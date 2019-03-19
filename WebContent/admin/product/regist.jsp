@@ -1,36 +1,103 @@
-<%@page import="java.util.Iterator"%>
-<%@page import="org.apache.commons.fileupload.FileItem"%>
-<%@page import="java.util.List"%>
-<%@page import="org.apache.commons.fileupload.servlet.ServletFileUpload"%>
+<%@page import="com.fashion.model.domain.Subcategory"%>
 <%@page import="java.io.File"%>
-<%@page import="org.apache.commons.fileupload.disk.DiskFileItemFactory"%>
+<%@page import="com.fashion.common.FileManager"%>
+<%@page import="com.fashion.model.domain.Product"%>
+<%@page import="com.fashion.model.repository.ProductDAO"%>
+<%@page import="com.oreilly.servlet.MultipartRequest"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
-<%!
-	DiskFileItemFactory factory = new DiskFileItemFactory();
-%>
+<%! ProductDAO productDAO = new ProductDAO(); %>
 <%
-	String realPath=application.getRealPath("/upload");
-	out.print(realPath);
+	//넘겨받은 파라미터 값을 이용해서 오라클에 등록 + 파일처리!!
+	//모든 작업 후, 목록으로...
+	//업로드는 클라이언트가 보낸 텍스트 파라미터 뿐만 아니라, 일반 바이너리 파일
+	//이 포함되므로, 기존 request.getParameter() 로는 처리가 불가...
+	//스트림 처리 포함되어야 함...따라서 개발자가 직접 코드를 작성하면 생산성이
+	//떨어지므로 잘 만들어진 외부 라이브러리를 이용하자 
+	// 오레일리사의 cos.jar , apache 의 commons fileupload를 경험해본다	
+	//cos jar 는 생성자에서 이미 업로드가 완료된다!!
 	
-	ServletFileUpload upload=new ServletFileUpload(factory);
-	List<FileItem> items=upload.parseRequest(request);
+	//getRealPath() 사용 이유?? 웹어플리케이션이 특정 os 에서 수행되는것을 방지하기
+	//위함.. 즉 특정 자원의 풀경로를 하드코딩하지말고, 해당 시스템의 환경에따라 동적으로 
+	//구하여 처리하자...윈도우,리눅스...맞게...
+	String saveDir=application.getRealPath("/data"); //저장경로 
+	out.print(saveDir+"<br>");
+	int maxSize=5*1024*1024; //업로드 용량 제한 
+	String encoding="utf-8";
 	
-	for(int i=0;i<items.size();i++){
-		FileItem item=items.get(i);
-		if(item.isFormField()){
-			//out.print("텍스트 필드입니다<br>");
-		}else{
-			String fieldName = item.getFieldName();
-			String fileName = item.getName();
-			String contentType = item.getContentType();
-			//out.print("파일형식:"+contentType.split("/")[1]);
-			boolean isInMemory = item.isInMemory();
-			long sizeInBytes = item.getSize();
-			
-			File file=new File(realPath+"/"+1234546+"."+contentType.split("/")[1]);
-			item.write(file);
-			item.delete();
-			out.print("<img src=\"/upload/123456.png\"/>");
-		}
-	}
+	MultipartRequest multi=new MultipartRequest(request,saveDir,maxSize,encoding);
+	
+	//함께 전송되어온 파라미터를 받으려면 평상시의 request.getParameter() 동작불가
+	String subcategory_id=multi.getParameter("subcategory_id");
+	String product_name=multi.getParameter("product_name");
+	String price=multi.getParameter("price");
+	String detail=multi.getParameter("detail");
+	
+	out.print(subcategory_id+"<br>");	
+	out.print(product_name+"<br>");	
+	out.print(price+"<br>");	
+	out.print(detail+"<br>");	
+	
+	
+	Product product = new Product();//파라미터 담을 dummy dto
+	Subcategory subcategory = new Subcategory();
+	subcategory.setSubcategory_id(Integer.parseInt(subcategory_id));
+	product.setSubcategory(subcategory);
+	product.setProduct_name(product_name);
+	product.setPrice(Integer.parseInt(price));
+	product.setDetail(detail);
+	product.setFilename(multi.getOriginalFileName("myFile"));
+	
+	//데이터베이스에 넣기에 앞서, 파일명을 개발자가 지정한 규칙으로 변경한다
+	//2019031912313122.jpg
+	long time=System.currentTimeMillis();
+	String ext=FileManager.getExt(multi.getOriginalFileName("myFile"));
+	String destFile=time+"."+ext;
+	out.print("최종 파일명은 "+destFile);
+	
+	//실제 저장되어 있는 파일의 이름을 변경해야 한다!!
+	File file=multi.getFile("myFile");
+	file.renameTo(new File(saveDir+"/"+destFile));
+	product.setFilename(destFile);//DTO의 파일명 교체!!
+	
+	int result=productDAO.insert(product);
+	
+	//list 요청 
+	response.sendRedirect("/admin/product/list.jsp");
 %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
