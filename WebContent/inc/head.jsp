@@ -12,8 +12,7 @@
 <link rel="stylesheet" type="text/css" href="styles/main_styles.css">
 <link rel="stylesheet" type="text/css" href="styles/responsive.css">
 <link rel="stylesheet" type="text/css" href="styles/categories.css">
-<link rel="stylesheet" type="text/css" href="styles/product.css">
-<link rel="stylesheet" type="text/css" href="styles/product_responsive.css">
+
 
 
 
