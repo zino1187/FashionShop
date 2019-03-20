@@ -27,6 +27,16 @@ public class CartDAO {
 		manager.release(sqlSession);
 		return list;
 	}
+	
+	//ªË¡¶ 
+	public int delete(int cart_id) {
+		int result=0;
+		SqlSession sqlSession=manager.getSqlSession();
+		result=sqlSession.delete("Cart.delete", cart_id);
+		sqlSession.commit();
+		manager.release(sqlSession);
+		return result;
+	}
 }
 
 

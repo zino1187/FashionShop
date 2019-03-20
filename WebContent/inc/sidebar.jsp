@@ -20,8 +20,12 @@
 		<li><a href="/category.jsp?topcategory_id=<%=topcategory.getTopcategory_id()%>"><%=topcategory.getTop_name()%><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
 		<%}%>
 		<li><a href="#">contact<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+		<li><a href="/registForm.jsp">Join<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+		
 	</ul>
 </nav>
+
+
 
 
 

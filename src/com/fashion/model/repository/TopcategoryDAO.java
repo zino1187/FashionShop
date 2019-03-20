@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import com.fashion.mybatis.config.ConfigManager;
 
+
 public class TopcategoryDAO {
 	ConfigManager manager=ConfigManager.getInstance();
 	

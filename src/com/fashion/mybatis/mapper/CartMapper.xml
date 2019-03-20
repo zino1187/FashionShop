@@ -24,6 +24,10 @@
 		select * from cart where customer_id=#{customer_id}
 	</select>
 	
+	<!-- cart_id값에 의해 한건 삭제 -->
+	<delete id="delete" parameterType="int">
+		delete from cart where cart_id=#{cart_id}	
+	</delete>
 </mapper>
 
 

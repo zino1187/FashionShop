@@ -1,54 +1,65 @@
-<%@page import="com.fashion.common.Formatter"%>
-<%@page import="com.fashion.model.domain.Cart"%>
-<%@page import="com.fashion.model.repository.CartDAO"%>
+<%@page import="java.util.List"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
-<%! CartDAO cartDAO = new CartDAO(); %>
-<%
-	List<Cart> cartList=cartDAO.selectByCustomer(1);//추후 정식 회원 id 넣을예정
-%>
-<%@ include file="/inc/header.jsp"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<style>
+/* Add padding to containers */
+.container {
+  padding: 16px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Overwrite default styles of hr */
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+/* Set a style for the submit button */
+.registerbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.registerbtn:hover {
+  opacity: 1;
+}
+
+/* Add a blue text color to links */
+a {
+  color: dodgerblue;
+}
+
+/* Set a grey background color and center the text of the "sign in" section */
+.signin {
+  background-color: #f1f1f1;
+  text-align: center;
+}
+</style>
 <%@ include file="/inc/head.jsp" %>
-<link rel="stylesheet" type="text/css" href="styles/cart.css">
-<link rel="stylesheet" type="text/css" href="styles/cart_responsive.css">
-<script>
-$(function(){
-	
-});
-
-function delCart(){
-	//체크박스를 체크했는지 검증하자!! 
-	var arr=$("input[type='checkbox']");
-	var count=0;
-	for(var i=0;i<arr.length;i++){
-		if($(arr[i]).is(":checked")){
-			count++;
-		}
-	}
-	if(count <=0){ //아무것도 체크하지 않은 유저임..
-		alert("삭제하실 아이템을 선택하세요!!!");
-		return;
-	}
-	if(confirm("삭제하시겠습니까?")){
-		$("#cart-form").attr({
-			"method":"post",
-			"action":"del_cart.jsp"
-		});
-		$("#cart-form").submit();
-	}
-}
-
-//장바구니 모든 체크박스의 상태를 일괄 적용!! 
-function checkAll(obj){
-	for(var i=0;i<$("input[name='cart_id']").length;i++){
-		$($("input[name='cart_id']")[i]).attr("checked",obj.checked);
-	}
-}
-</script>
 </head>
-
 <body>
 
 <div class="super_container">
@@ -70,11 +81,10 @@ function checkAll(obj){
 			<nav class="header_nav">
 				<ul class="d-flex flex-row align-items-center justify-content-start">
 					<li><a href="index.html">home</a></li>
-					<li><a href="#">woman</a></li>
-					<li><a href="#">man</a></li>
-					<li><a href="#">lookbook</a></li>
-					<li><a href="#">blog</a></li>
-					<li><a href="#">contact</a></li>
+					<%for(int i=0;i<4;i++){%>
+					<li><a href="#">woman<%=i%></a></li>
+					<%}%>
+					<li><a href="#">고객센터</a></li>
 				</ul>
 			</nav>
 
@@ -272,8 +282,9 @@ function checkAll(obj){
 		</div>
 
 		<!-- Logo -->
+
+		<!-- Sidebar Navigation -->
 		<%@ include file="/inc/sidebar.jsp" %>
-		
 		<!-- Search -->
 		<div class="search">
 			<form action="#" class="search_form" id="sidebar_search_form">
@@ -281,140 +292,60 @@ function checkAll(obj){
 				<button class="search_button"><i class="fa fa-search" aria-hidden="true"></i></button>
 			</form>
 		</div>
-
-		<!-- Cart -->
-		<div class="cart d-flex flex-row align-items-center justify-content-start">
-			<div class="cart_icon"><a href="cart.html">
-				<img src="images/bag.png" alt="">
-				<div class="cart_num">2</div>
-			</a></div>
-			<div class="cart_text">bag</div>
-			<div class="cart_price">$39.99 (1)</div>
-		</div>
 	</div>
 
 	<!-- Home -->
 
-	<div class="home">
-		<div class="parallax_background parallax-window" data-parallax="scroll" data-image-src="images/product_background.jpg" data-speed="0.8"></div>
-		<div class="home_container">
-			<div class="home_content">
-				<div class="home_title">Cart</div>
-				<div class="breadcrumbs">
-					<ul class="d-flex flex-row align-items-center justify-content-start">
-						<li><a href="index.html">Home</a></li>
-						<li>Your Cart</li>
-					</ul>
-				</div>
+	
+
+	<!-- Boxes -->
+	
+	<div class="boxes">
+		<div class="section_container">
+			<div class="container">
+<form action="/action_page.php">
+  <div class="container">
+    <h1>Register</h1>
+    <p>Please fill in this form to create an account.</p>
+    <hr>
+
+    <label for="email"><b>Email</b></label>
+    <input type="text" placeholder="Enter Email" name="email" required>
+
+    <label for="psw"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="psw" required>
+
+    <label for="psw-repeat"><b>Repeat Password</b></label>
+    <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
+    <hr>
+    <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
+
+    <button type="submit" class="registerbtn">Register</button>
+  </div>
+  
+  <div class="container signin">
+    <p>Already have an account? <a href="#">Sign in</a>.</p>
+  </div>
+</form>			
+			
+				
 			</div>
 		</div>
 	</div>
 
-	<!-- Cart -->
-	<form id="cart-form">
-	<input type="hidden" name="topcategory_id" value="<%=topcategory_id%>"/>
-	<div class="cart_section">
+	<!-- Categories -->
+
+	<div class="categories">
 		<div class="section_container">
 			<div class="container">
 				<div class="row">
-					<div class="col">
-						<div class="cart_container">
-							
-							<!-- Cart Bar -->
-							<div class="cart_bar">
-								<input type="checkbox" onClick="checkAll(this)"/>
-								<ul class="cart_bar_list item_list d-flex flex-row align-items-center justify-content-start">
-									
-									<li>Product</li>
-									<li>Color</li>
-									<li>Size</li>
-									<li>Price</li>
-									<li>Quantity</li>
-									<li>Total</li>
-								</ul>
-							</div>
-
-							<!-- Cart Items -->
-							<div class="cart_items">
-								<ul class="cart_items_list">
-
-									<!-- Cart Item -->
-									<%for(int i=0;i<cartList.size();i++){ %>
-									<%Cart cart=cartList.get(i); %>
-									<li class="cart_item item_list d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-start">
-										<div class="product d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-start">
-											<div class="product_name">
-												<input type="checkbox" style="width:50px;" name="cart_id" value="<%=cart.getCart_id()%>"/>
-											</div>
-											<div>
-												<div class="product_image"><img src="/data/<%=cart.getProduct().getFilename() %>" alt=""></div>
-											</div>
-											<div class="product_name"><a href="product.html"><%=cart.getProduct().getProduct_name() %></a></div>
-										</div>
-										<div class="product_color text-lg-center product_text"><span>Color: </span>Brown</div>
-										<div class="product_size text-lg-center product_text"><span>Size: </span>One Size</div>
-										<div class="product_price text-lg-center product_text"><span>Price: </span><%=Formatter.getCurrency(cart.getProduct().getPrice()) %></div>
-										<div class="product_quantity_container">
-											<div class="product_quantity ml-lg-auto mr-lg-auto text-center">
-												<span class="product_text product_num">1</span>
-												<div class="qty_sub qty_button trans_200 text-center"><span>-</span></div>
-												<div class="qty_add qty_button trans_200 text-center"><span>+</span></div>
-											</div>
-										</div>
-										<div class="product_total text-lg-center product_text"><span>Total: </span>$19.50</div>
-									</li>
-									<%} %>
-									
-								</ul>
-							</div>
-
-							<!-- Cart Buttons -->
-							<div class="cart_buttons d-flex flex-row align-items-start justify-content-start">
-								<div class="cart_buttons_inner ml-auto d-flex flex-row align-items-start justify-content-start flex-wrap">
-									<div class="button button_continue trans_200"><a href="categories.html">continue shopping</a></div>
-									<div class="button button_clear trans_200"><a href="javascript:delCart()">clear cart</a></div>
-									<div class="button button_update trans_200"><a href="categories.html">update cart</a></div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		</form>
-
-		<div class="section_container cart_extra_container">
-			<div class="container">
-				<div class="row">
-
-					<!-- Shipping & Delivery -->
-					<div class="col-xxl-6">
-						<div class="cart_extra cart_extra_1">
-							
-						</div>
-					</div>
-
-					<!-- Cart Total -->
-					<div class="col-xxl-6">
-						<div class="cart_extra cart_extra_2">
-							<div class="cart_extra_content cart_extra_total">
-								<div class="cart_extra_title">Cart Total</div>
-								<ul class="cart_extra_total_list">
-									<li class="d-flex flex-row align-items-center justify-content-start">
-										<div class="cart_extra_total_title">Subtotal</div>
-										<div class="cart_extra_total_value ml-auto">$29.90</div>
-									</li>
-									<li class="d-flex flex-row align-items-center justify-content-start">
-										<div class="cart_extra_total_title">Shipping</div>
-										<div class="cart_extra_total_value ml-auto">Free</div>
-									</li>
-									<li class="d-flex flex-row align-items-center justify-content-start">
-										<div class="cart_extra_total_title">Total</div>
-										<div class="cart_extra_total_value ml-auto">$29.90</div>
-									</li>
-								</ul>
-								<div class="checkout_button trans_200"><a href="payment.jsp">결제하기</a></div>
-							</div>
+					<div class="col text-center">
+						<div class="categories_list_container">
+							<ul class="categories_list d-flex flex-row align-items-center justify-content-start">
+								<li><a href="categories.html">new arrivals</a></li>
+								<li><a href="categories.html">recommended</a></li>
+								<li><a href="categories.html">best sellers</a></li>
+							</ul>
 						</div>
 					</div>
 				</div>
@@ -422,29 +353,12 @@ function checkAll(obj){
 		</div>
 	</div>
 
+	<!-- Products -->
+
+	
 	<!-- Newsletter -->
 
-	<div class="newsletter">
-		<div class="parallax_background parallax-window" data-parallax="scroll" data-image-src="images/newsletter.jpg" data-speed="0.8"></div>
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-8 offset-lg-2">
-					<div class="newsletter_content text-center">
-						<div class="newsletter_title_container">
-							<div class="newsletter_title">subscribe to our newsletter</div>
-							<div class="newsletter_subtitle">we won't spam, we promise!</div>
-						</div>
-						<div class="newsletter_form_container">
-							<form action="#" id="newsletter_form" class="newsletter_form">
-								<input type="email" class="newsletter_input" placeholder="your e-mail here" required="required">
-								<button class="newsletter_button">submit</button>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+	
 
 	<!-- Footer -->
 
@@ -627,13 +541,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			</div>
 		</div>
 	</footer>
+
 </div>
-<script src="js/cart.js"></script>
+
 </body>
 </html>
-
-
-
-
-
-
