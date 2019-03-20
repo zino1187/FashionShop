@@ -59,6 +59,15 @@ a {
 }
 </style>
 <%@ include file="/inc/head.jsp" %>
+<script>
+function regist(){
+	$("#regist-form").attr({
+		method:"post",
+		action:"/member/regist.jsp"
+	});		
+	$("#regist-form").submit();
+}
+</script>
 </head>
 <body>
 
@@ -303,7 +312,7 @@ a {
 	<div class="boxes">
 		<div class="section_container">
 			<div class="container">
-			<form action="/action_page.php">
+			<form id="login-form">
 			  <div class="container">
 			    <h1>Login</h1>
 			    <hr>
@@ -326,7 +335,7 @@ a {
 			  </div>
 			</form>				
 			
-			<form action="/action_page.php">
+			<form id="regist-form">
 			  <div class="container">
 			    <h1>Register</h1>
 			    <p>Please fill in this form to create an account.</p>
@@ -337,7 +346,7 @@ a {
 			    <hr>
 			    <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
 			
-			    <button type="button" class="registerbtn">Register</button>
+			    <button type="button" class="registerbtn" onClick="regist()">Register</button>
 			  </div>
 			  
 			  <div class="container signin">
