@@ -1,3 +1,6 @@
+<%@page import="com.fashion.model.domain.Product"%>
+<%@page import="com.fashion.model.domain.OrderDetail"%>
+<%@page import="com.fashion.model.repository.OrderDetailDAO"%>
 <%@page import="com.fashion.model.domain.OrderSummary"%>
 <%@page import="com.fashion.model.repository.OrderSummaryDAO"%>
 <%@page import="com.fashion.model.domain.Customer"%>
@@ -6,6 +9,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%!
 	OrderSummaryDAO summaryDAO = new OrderSummaryDAO();
+	OrderDetailDAO detailDAO=new OrderDetailDAO();
 %>
 <%
 	request.setCharacterEncoding("utf-8");
@@ -42,9 +46,25 @@
 	paymethod.setPaymethod_id(Integer.parseInt(paymethod_id));
 	summary.setPaymethod(paymethod);
 	
-	int result=summaryDAO.insert(summary);
-	if(result !=0){
+	int key=summaryDAO.insert(summary);
+	
+	if(key !=0){
 		out.print("성공");
+		
+		for(int i=0;i<product_id.length;i++){
+			//주문상세 정보 입력
+			OrderDetail orderDetail = new OrderDetail();//1건
+			orderDetail.setOrderSummary(summary);//insert 이후 시점엔
+			//select Key mybatis 기능에 의해 채워져 있다!!
+			Product product=new Product();
+			product.setProduct_id(Integer.parseInt(product_id[i]));//what
+			orderDetail.setEa(Integer.parseInt(ea[i]));//how many
+			//어떤 주문에 소속된 것임???
+					
+			orderDetail.setProduct(product);
+			detailDAO.insert(orderDetail);
+		}
+		
 	}else{
 		out.print("실패");
 	}

@@ -2,25 +2,21 @@ package com.fashion.model.repository;
 
 import org.apache.ibatis.session.SqlSession;
 
-import com.fashion.model.domain.OrderSummary;
+import com.fashion.model.domain.OrderDetail;
 import com.fashion.mybatis.config.ConfigManager;
 
-public class OrderSummaryDAO {
+public class OrderDetailDAO {
 	ConfigManager manager=ConfigManager.getInstance();
 	
-	//주문 요약 insert 
-	public int insert(OrderSummary orderSummary) {
+	public int insert(OrderDetail orderDetail){
+		int result=0;
 		SqlSession sqlSession=manager.getSqlSession();
-		sqlSession.insert("OrderSummary.insert", orderSummary);
+		result=sqlSession.insert("OrderDetail.insert", orderDetail);
 		sqlSession.commit();
 		manager.release(sqlSession);
-		return orderSummary.getOrder_summary_id();
+		return result;
 	}
 }
-
-
-
-
 
 
 
