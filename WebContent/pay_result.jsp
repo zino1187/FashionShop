@@ -22,22 +22,11 @@
 <%@ include file="/inc/head.jsp" %>
 <link rel="stylesheet" type="text/css" href="styles/checkout.css">
 <link rel="stylesheet" type="text/css" href="styles/checkout_responsive.css">
-<script src="js/checkout.js"></script>
-<script>
-function pay(){
-	//결제를 완료하고 결과페이지 보여주기
-	
-}
-</script>
 </head>
 <body>
-<form>
-<%for(int i=0;i<product_id.length;i++){%>
-<input type="hidden" name="product_id" value="<%=product_id[i]%>"/>
-<input type="hidden" name="ea" value="<%=ea[i]%>"/>
-<%}%>
+
 <div class="super_container">
-	
+
 	<!-- Header -->
 
 	<header class="header">
@@ -173,6 +162,12 @@ function pay(){
 
 		</div>
 		<div class="menu_search">
+			<form action="#" class="header_search_form menu_mm">
+				<input type="search" class="search_input menu_mm" placeholder="Search" required="required">
+				<button class="header_search_button d-flex flex-column align-items-center justify-content-center menu_mm">
+					<i class="fa fa-search menu_mm" aria-hidden="true"></i>
+				</button>
+			</form>
 		</div>
 		<nav class="menu_nav">
 			<ul class="menu_mm">
@@ -230,10 +225,10 @@ function pay(){
 		
 		<!-- Search -->
 		<div class="search">
-
+			<form action="#" class="search_form" id="sidebar_search_form">
 				<input type="text" class="search_input" placeholder="Search" required="required">
 				<button class="search_button"><i class="fa fa-search" aria-hidden="true"></i></button>
-
+			</form>
 		</div>
 
 		<!-- Cart -->
@@ -276,30 +271,79 @@ function pay(){
 							
 							<!-- Billing -->
 							<div class="billing checkout_box">
-								<div class="checkout_title">무통장 결제 정보</div>
+								<div class="checkout_title">Billing Address</div>
 								<div class="checkout_form_container">
-									
+									<form action="#" id="checkout_form" class="checkout_form">
 										<div class="row">
 											<div class="col-lg-6">
 												<!-- Name -->
-												<label for="checkout_name">입금자명*</label>
-												<input type="text" name="sender" class="checkout_input" required="required">
+												<label for="checkout_name">First Name*</label>
+												<input type="text" id="checkout_name" class="checkout_input" required="required">
+											</div>
+											<div class="col-lg-6">
+												<!-- Last Name -->
+												<label for="checkout_last_name">Last Name*</label>
+												<input type="text" id="checkout_last_name" class="checkout_input" required="required">
 											</div>
 										</div>
 										<div>
+											<!-- Company -->
+											<label for="checkout_company">Company</label>
+											<input type="text" id="checkout_company" class="checkout_input">
+										</div>
+										<div>
 											<!-- Country -->
-											<label for="checkout_country">입금 계좌선택</label>
-											<select name="bank" id="checkout_country" class="dropdown_item_select checkout_input" require="required">
+											<label for="checkout_country">Country*</label>
+											<select name="checkout_country" id="checkout_country" class="dropdown_item_select checkout_input" require="required">
 												<option></option>
-												<option value="1">국민은행 157-789541-01-124</option>
-												<option value="2">기업은행 082-084778-04-389</option>
-												<option value="3">신한은행 036-77898-25-100</option>
+												<option>Lithuania</option>
+												<option>Sweden</option>
+												<option>UK</option>
+												<option>Italy</option>
 											</select>
+										</div>
+										<div>
+											<!-- Address -->
+											<label for="checkout_address">Address*</label>
+											<input type="text" id="checkout_address" class="checkout_input" required="required">
+											<input type="text" id="checkout_address_2" class="checkout_input checkout_address_2" required="required">
+										</div>
+										<div>
+											<!-- Zipcode -->
+											<label for="checkout_zipcode">Zipcode*</label>
+											<input type="text" id="checkout_zipcode" class="checkout_input" required="required">
+										</div>
+										<div>
+											<!-- City / Town -->
+											<label for="checkout_city">City/Town*</label>
+											<select name="checkout_city" id="checkout_city" class="dropdown_item_select checkout_input" require="required">
+												<option></option>
+												<option>City</option>
+												<option>City</option>
+												<option>City</option>
+												<option>City</option>
+											</select>
+										</div>
+										<div>
+											<!-- Province -->
+											<label for="checkout_province">Province*</label>
+											<select name="checkout_province" id="checkout_province" class="dropdown_item_select checkout_input" require="required">
+												<option></option>
+												<option>Province</option>
+												<option>Province</option>
+												<option>Province</option>
+												<option>Province</option>
+											</select>
+										</div>
+										<div>
+											<!-- Phone no -->
+											<label for="checkout_phone">Phone no*</label>
+											<input type="phone" id="checkout_phone" class="checkout_input" required="required">
 										</div>
 										<div>
 											<!-- Email -->
 											<label for="checkout_email">Email Address*</label>
-											<input type="text" name="email" class="checkout_input" required="required">
+											<input type="phone" id="checkout_email" class="checkout_input" required="required">
 										</div>
 										<div class="checkout_extra">
 											<ul>
@@ -326,7 +370,7 @@ function pay(){
 												</li>
 											</ul>
 										</div>
-									
+									</form>
 								</div>
 							</div>
 
@@ -338,7 +382,6 @@ function pay(){
 										<li class="d-flex flex-row align-items-center justify-content-start">
 											<div class="cart_extra_total_title">Subtotal</div>
 											<div class="cart_extra_total_value ml-auto"><%=Formatter.getCurrency(total) %></div>
-											<input type="hidden" name="total_buy" value="<%=total%>"/>
 										</li>
 										<li class="d-flex flex-row align-items-center justify-content-start">
 											<div class="cart_extra_total_title">Shipping</div>
@@ -347,7 +390,6 @@ function pay(){
 										<li class="d-flex flex-row align-items-center justify-content-start">
 											<div class="cart_extra_total_title">Total</div>
 											<div class="cart_extra_total_value ml-auto"><%=Formatter.getCurrency(total) %></div>
-											<input type="hidden" name="total_pay" value="<%=total%>"/>
 										</li>
 									</ul>
 
@@ -357,7 +399,7 @@ function pay(){
 											<%for(int i=0;i<paymethodList.size();i++){%>
 											<%Paymethod paymethod=paymethodList.get(i); %>
 											<label class="payment_option clearfix"><%=paymethod.getName() %>
-												<input type="radio" name="paymethod_id" value="<%=paymethod.getPaymethod_id()%>"/>
+												<input type="radio" name="radio">
 												<span class="checkmark"></span>
 											</label>
 											<%} %>
@@ -391,7 +433,10 @@ function pay(){
 							<div class="newsletter_subtitle">we won't spam, we promise!</div>
 						</div>
 						<div class="newsletter_form_container">
-		
+							<form action="#" id="newsletter_form" class="newsletter_form">
+								<input type="email" class="newsletter_input" placeholder="your e-mail here" required="required">
+								<button class="newsletter_button">submit</button>
+							</form>
 						</div>
 					</div>
 				</div>
@@ -580,11 +625,20 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			</div>
 		</div>
 	</footer>
+
 </div>
-</form>
+
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="styles/bootstrap-4.1.3/popper.js"></script>
+<script src="styles/bootstrap-4.1.3/bootstrap.min.js"></script>
+<script src="plugins/greensock/TweenMax.min.js"></script>
+<script src="plugins/greensock/TimelineMax.min.js"></script>
+<script src="plugins/scrollmagic/ScrollMagic.min.js"></script>
+<script src="plugins/greensock/animation.gsap.min.js"></script>
+<script src="plugins/greensock/ScrollToPlugin.min.js"></script>
+<script src="plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+<script src="plugins/easing/easing.js"></script>
+<script src="plugins/parallax-js-master/parallax.min.js"></script>
+<script src="js/checkout.js"></script>
 </body>
 </html>
-
-
-
-
