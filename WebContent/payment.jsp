@@ -27,7 +27,7 @@
 function pay(){
 	//결제를 완료하고 결과페이지 보여주기
 	$("form").attr({
-		action:"pay_result.jsp",
+		action:"pay.jsp",
 		method:"post"
 	});
 	$("form").submit();

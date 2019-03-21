@@ -3,6 +3,8 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ include file="/inc/header.jsp" %>
 <%
+		
+	request.setCharacterEncoding("utf-8");
 	//상품, 갯수  히든으로 넘어옴
 	String[] product_id=request.getParameterValues("product_id");
 	String[] ea=request.getParameterValues("ea");
@@ -393,7 +395,7 @@
 									<ul class="cart_extra_total_list">
 										<li class="d-flex flex-row align-items-center justify-content-start">
 											<div class="cart_extra_total_title">Subtotal</div>
-											<div class="cart_extra_total_value ml-auto"><%=Formatter.getCurrency(total) %></div>
+											<div class="cart_extra_total_value ml-auto"><%=Formatter.getCurrency(Integer.parseInt(total_buy)) %></div>
 										</li>
 										<li class="d-flex flex-row align-items-center justify-content-start">
 											<div class="cart_extra_total_title">Shipping</div>
@@ -401,20 +403,18 @@
 										</li>
 										<li class="d-flex flex-row align-items-center justify-content-start">
 											<div class="cart_extra_total_title">Total</div>
-											<div class="cart_extra_total_value ml-auto"><%=Formatter.getCurrency(total) %></div>
+											<div class="cart_extra_total_value ml-auto"><%=Formatter.getCurrency(Integer.parseInt(total_pay)) %></div>
 										</li>
 									</ul>
 
 									<!-- Payment Options -->
 									<div class="payment">
 										<div class="payment_options">
-											<%for(int i=0;i<paymethodList.size();i++){%>
-											<%Paymethod paymethod=paymethodList.get(i); %>
-											<label class="payment_option clearfix"><%=paymethod.getName() %>
+											<label class="payment_option clearfix">
+												<%=paymethod_id%>
 												<input type="radio" name="radio">
 												<span class="checkmark"></span>
 											</label>
-											<%} %>
 										</div>
 									</div>
 

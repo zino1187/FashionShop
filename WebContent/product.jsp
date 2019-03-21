@@ -19,7 +19,11 @@
 <script>
 $(function(){
 	$("#product_form button").click(function(){
-		addCart();
+		<%if(session.getAttribute("customer")!=null){%>
+			addCart();
+		<%}else{%>
+			alert("로그인이 필요한 서비스 입니다");
+		<%}%>		
 	});	
 });
 
