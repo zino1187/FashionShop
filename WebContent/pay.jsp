@@ -1,7 +1,12 @@
+<%@page import="com.fashion.model.domain.OrderSummary"%>
+<%@page import="com.fashion.model.repository.OrderSummaryDAO"%>
 <%@page import="com.fashion.model.domain.Customer"%>
 <%@page import="com.fashion.common.Formatter"%>
 <%@page import="com.fashion.model.domain.Paymethod"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%!
+	OrderSummaryDAO summaryDAO = new OrderSummaryDAO();
+%>
 <%
 	request.setCharacterEncoding("utf-8");
 	//상품, 갯수  히든으로 넘어옴
@@ -28,4 +33,31 @@
 	System.out.println("bank"+bank);
 	System.out.println("email"+email);
 
+	//insert 
+	OrderSummary summary=new OrderSummary();
+	summary.setCustomer(cs);
+	summary.setTotal_buy(Integer.parseInt(total_buy));
+	summary.setTotal_pay(Integer.parseInt(total_pay));
+	Paymethod paymethod = new Paymethod();
+	paymethod.setPaymethod_id(Integer.parseInt(paymethod_id));
+	summary.setPaymethod(paymethod);
+	
+	int result=summaryDAO.insert(summary);
+	if(result !=0){
+		out.print("성공");
+	}else{
+		out.print("실패");
+	}
 %>
+
+
+
+
+
+
+
+
+
+
+
+
