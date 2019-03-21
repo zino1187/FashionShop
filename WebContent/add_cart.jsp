@@ -14,16 +14,26 @@
 	System.out.println("넘겨받은 갯수는 "+ea);
 	
 	Cart cart=new Cart();
-	Customer customer =new Customer();
 	Product product = new Product();
 	
-	customer.setCustomer_id(1); //추후 변경 예정 
+	//로그인 한 유저로부터 customer_id 추출한다 (retrieve)
+	Customer customer=(Customer)session.getAttribute("customer");
 	product.setProduct_id(Integer.parseInt(product_id));
 	cart.setEa(Integer.parseInt(ea));
 	cart.setCustomer(customer);
 	cart.setProduct(product);
 	
-	int result=cartDAO.insert(cart);
+	//장바구니에 이미 동일한 제품이 담겨 있을 경우, 레코드를 증가시키면 안되고
+	//갯수를 증가시키자!!
+	Cart ct=cartDAO.selectByProductId(cart);
+	
+	int result=0;
+	
+	if(ct!=null){ //이미 등록된 상품이 있다면...갯수를 update 해줘야 함
+		result=cartDAO.updateCart(ct.getCart_id());
+	}else{
+		result=cartDAO.insert(cart);
+	}	
 	out.print(result);
 %>
 

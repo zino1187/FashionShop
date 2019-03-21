@@ -1,5 +1,12 @@
+<%@page import="com.fashion.model.domain.Paymethod"%>
+<%@page import="com.fashion.model.repository.PaymethodDAO"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%! PaymethodDAO payDAO=new PaymethodDAO(); %>
 <%@ include file="/inc/header.jsp" %>
+<%
+	int total=Integer.parseInt(request.getParameter("total"));
+	List<Paymethod> paymethodList=payDAO.selectAll();
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -184,33 +191,8 @@
 			<div class="info_content d-flex flex-row align-items-center justify-content-start">
 				
 				<!-- Language -->
-				<div class="info_languages has_children">
-					<div class="language_flag"><img src="images/flag_1.svg" alt="https://www.flaticon.com/authors/freepik"></div>
-					<div class="dropdown_text">english</div>
-					<div class="dropdown_arrow"><i class="fa fa-angle-down" aria-hidden="true"></i></div>
+				<%@ include file="/inc/userinfo.jsp" %>
 					
-					<!-- Language Dropdown Menu -->
-					 <ul>
-					 	<li><a href="#">
-				 			<div class="language_flag"><img src="images/flag_2.svg" alt="https://www.flaticon.com/authors/freepik"></div>
-							<div class="dropdown_text">french</div>
-					 	</a></li>
-					 	<li><a href="#">
-				 			<div class="language_flag"><img src="images/flag_3.svg" alt="https://www.flaticon.com/authors/freepik"></div>
-							<div class="dropdown_text">japanese</div>
-					 	</a></li>
-					 	<li><a href="#">
-				 			<div class="language_flag"><img src="images/flag_4.svg" alt="https://www.flaticon.com/authors/freepik"></div>
-							<div class="dropdown_text">russian</div>
-					 	</a></li>
-					 	<li><a href="#">
-				 			<div class="language_flag"><img src="images/flag_5.svg" alt="https://www.flaticon.com/authors/freepik"></div>
-							<div class="dropdown_text">spanish</div>
-					 	</a></li>
-					 </ul>
-
-				</div>
-
 				<!-- Currency -->
 				<div class="info_currencies has_children">
 					<div class="dropdown_text">usd</div>
@@ -405,22 +387,13 @@
 									<!-- Payment Options -->
 									<div class="payment">
 										<div class="payment_options">
-											<label class="payment_option clearfix">Paypal
+											<%for(int i=0;i<paymethodList.size();i++){%>
+											<%Paymethod paymethod=paymethodList.get(i); %>
+											<label class="payment_option clearfix"><%=paymethod.getName() %>
 												<input type="radio" name="radio">
 												<span class="checkmark"></span>
 											</label>
-											<label class="payment_option clearfix">Cach on delivery
-												<input type="radio" name="radio">
-												<span class="checkmark"></span>
-											</label>
-											<label class="payment_option clearfix">Credit card
-												<input type="radio" name="radio">
-												<span class="checkmark"></span>
-											</label>
-											<label class="payment_option clearfix">Direct bank transfer
-												<input type="radio" checked="checked" name="radio">
-												<span class="checkmark"></span>
-											</label>
+											<%} %>
 										</div>
 									</div>
 

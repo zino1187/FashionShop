@@ -67,6 +67,13 @@ function regist(){
 	});		
 	$("#regist-form").submit();
 }
+function login(){
+	$("#login-form").attr({
+		method:"post",
+		action:"/member/login.jsp"
+	});	
+	$("#login-form").submit();
+}
 </script>
 </head>
 <body>
@@ -316,18 +323,11 @@ function regist(){
 			  <div class="container">
 			    <h1>Login</h1>
 			    <hr>
-			    <label for="email"><b>Email</b></label>
-			    <input type="text" placeholder="Enter Email" name="email" required>
-			
-			    <label for="psw"><b>Password</b></label>
-			    <input type="password" placeholder="Enter Password" name="psw" required>
-			
-			    <label for="psw-repeat"><b>Repeat Password</b></label>
-			    <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
+			    <input type="text" placeholder="Your ID" name="id" required>
+			    <input type="password" placeholder="Enter Password" name="pass" required>
 			    <hr>
 			    <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
-			
-			    <button type="submit" class="registerbtn">Login</button>
+			    <button type="button" class="registerbtn" onClick="login()">Login</button>
 			  </div>
 			  
 			  <div class="container signin">

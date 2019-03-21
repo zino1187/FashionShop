@@ -12,6 +12,13 @@
 		<association 	column="product_id" 		property="product" 	javaType="Product" 		select="Product.select"/>
 		<association 	column="customer_id" 	property="customer" 	javaType="Customer" 	select="Customer.select"/>
 	</resultMap>
+	
+	<!-- 장바구니 중복확인 -->
+	<select id="selectByProductId" parameterType="Cart" resultMap="cartmap">
+		select * from cart 
+		where product_id=#{product.product_id} 
+		and customer_id=#{customer.customer_id}
+	</select>
 
 	<!-- 장바구니에 상품 1건 등록 -->
 	<insert id="insert" parameterType="Cart">
@@ -28,6 +35,12 @@
 	<delete id="delete" parameterType="int">
 		delete from cart where cart_id=#{cart_id}	
 	</delete>
+	
+	<!-- 갯수 업데이트 -->
+	<update id="updateCart" parameterType="int">
+		update cart set ea=ea+1 where cart_id=#{cart_id}
+	</update>
+	
 </mapper>
 
 

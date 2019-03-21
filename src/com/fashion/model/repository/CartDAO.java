@@ -37,7 +37,28 @@ public class CartDAO {
 		manager.release(sqlSession);
 		return result;
 	}
+	
+	public Cart selectByProductId(Cart cart) {
+		SqlSession sqlSession=manager.getSqlSession();
+		Cart ct=sqlSession.selectOne("Cart.selectByProductId", cart);
+		manager.release(sqlSession);
+		return ct;
+	}
+	public int updateCart(int cart_id) {
+		int result=0;
+		SqlSession sqlSession=manager.getSqlSession();
+		result=sqlSession.update("Cart.updateCart", cart_id);
+		sqlSession.commit();
+		manager.release(sqlSession);
+		return result;
+	}
 }
+
+
+
+
+
+
 
 
 

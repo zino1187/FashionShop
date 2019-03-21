@@ -4,7 +4,8 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%! CartDAO cartDAO = new CartDAO(); %>
 <%
-	List<Cart> cartList=cartDAO.selectByCustomer(1);//추후 정식 회원 id 넣을예정
+	Customer cs=(Customer)session.getAttribute("customer");
+	List<Cart> cartList=cartDAO.selectByCustomer(cs.getCustomer_id());//추후 정식 회원 id 넣을예정
 %>
 <%@ include file="/inc/header.jsp"%>
 <!DOCTYPE html>
@@ -45,6 +46,9 @@ function checkAll(obj){
 	for(var i=0;i<$("input[name='cart_id']").length;i++){
 		$($("input[name='cart_id']")[i]).attr("checked",obj.checked);
 	}
+}
+function payform(){
+		
 }
 </script>
 </head>
@@ -226,33 +230,8 @@ function checkAll(obj){
 			<div class="info_content d-flex flex-row align-items-center justify-content-start">
 				
 				<!-- Language -->
-				<div class="info_languages has_children">
-					<div class="language_flag"><img src="images/flag_1.svg" alt="https://www.flaticon.com/authors/freepik"></div>
-					<div class="dropdown_text">english</div>
-					<div class="dropdown_arrow"><i class="fa fa-angle-down" aria-hidden="true"></i></div>
+				<%@ include file="/inc/userinfo.jsp" %>
 					
-					<!-- Language Dropdown Menu -->
-					 <ul>
-					 	<li><a href="#">
-				 			<div class="language_flag"><img src="images/flag_2.svg" alt="https://www.flaticon.com/authors/freepik"></div>
-							<div class="dropdown_text">french</div>
-					 	</a></li>
-					 	<li><a href="#">
-				 			<div class="language_flag"><img src="images/flag_3.svg" alt="https://www.flaticon.com/authors/freepik"></div>
-							<div class="dropdown_text">japanese</div>
-					 	</a></li>
-					 	<li><a href="#">
-				 			<div class="language_flag"><img src="images/flag_4.svg" alt="https://www.flaticon.com/authors/freepik"></div>
-							<div class="dropdown_text">russian</div>
-					 	</a></li>
-					 	<li><a href="#">
-				 			<div class="language_flag"><img src="images/flag_5.svg" alt="https://www.flaticon.com/authors/freepik"></div>
-							<div class="dropdown_text">spanish</div>
-					 	</a></li>
-					 </ul>
-
-				</div>
-
 				<!-- Currency -->
 				<div class="info_currencies has_children">
 					<div class="dropdown_text">usd</div>
@@ -313,6 +292,8 @@ function checkAll(obj){
 	<!-- Cart -->
 	<form id="cart-form">
 	<input type="hidden" name="topcategory_id" value="<%=topcategory_id%>"/>
+	
+	
 	<div class="cart_section">
 		<div class="section_container">
 			<div class="container">
@@ -339,8 +320,14 @@ function checkAll(obj){
 								<ul class="cart_items_list">
 
 									<!-- Cart Item -->
+									<%
+										int total=0;
+									%>
 									<%for(int i=0;i<cartList.size();i++){ %>
 									<%Cart cart=cartList.get(i); %>
+									<%
+										total+=cart.getProduct().getPrice();
+									%>
 									<li class="cart_item item_list d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-start">
 										<div class="product d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-start">
 											<div class="product_name">
@@ -356,13 +343,16 @@ function checkAll(obj){
 										<div class="product_price text-lg-center product_text"><span>Price: </span><%=Formatter.getCurrency(cart.getProduct().getPrice()) %></div>
 										<div class="product_quantity_container">
 											<div class="product_quantity ml-lg-auto mr-lg-auto text-center">
-												<span class="product_text product_num">1</span>
+												<span name="span_ea" class="product_text product_num">1</span>
 												<div class="qty_sub qty_button trans_200 text-center"><span>-</span></div>
 												<div class="qty_add qty_button trans_200 text-center"><span>+</span></div>
 											</div>
 										</div>
-										<div class="product_total text-lg-center product_text"><span>Total: </span>$19.50</div>
+										<div class="product_total text-lg-center product_text"><span>Total: </span><%=Formatter.getCurrency(cart.getProduct().getPrice()) %></div>
 									</li>
+									<input type="text" size="3" name="product_id" value="<%=cart.getProduct().getProduct_id()%>"/>
+									<input type="text" size="3" name="ea" value="<%=cart.getEa()%>"/>
+									
 									<%} %>
 									
 								</ul>
@@ -381,6 +371,7 @@ function checkAll(obj){
 				</div>
 			</div>
 		</div>
+		<input type="hidden" name="total" value="<%=total%>"/>
 		</form>
 
 		<div class="section_container cart_extra_container">
@@ -402,7 +393,7 @@ function checkAll(obj){
 								<ul class="cart_extra_total_list">
 									<li class="d-flex flex-row align-items-center justify-content-start">
 										<div class="cart_extra_total_title">Subtotal</div>
-										<div class="cart_extra_total_value ml-auto">$29.90</div>
+										<div class="cart_extra_total_value ml-auto"><%=Formatter.getCurrency(total) %></div>
 									</li>
 									<li class="d-flex flex-row align-items-center justify-content-start">
 										<div class="cart_extra_total_title">Shipping</div>
@@ -410,10 +401,10 @@ function checkAll(obj){
 									</li>
 									<li class="d-flex flex-row align-items-center justify-content-start">
 										<div class="cart_extra_total_title">Total</div>
-										<div class="cart_extra_total_value ml-auto">$29.90</div>
+										<div class="cart_extra_total_value ml-auto"><%=Formatter.getCurrency(total) %></div>
 									</li>
 								</ul>
-								<div class="checkout_button trans_200"><a href="payment.jsp">결제하기</a></div>
+								<div class="checkout_button trans_200"><a href="javascript:payform()">결제하기</a></div>
 							</div>
 						</div>
 					</div>
@@ -424,27 +415,7 @@ function checkAll(obj){
 
 	<!-- Newsletter -->
 
-	<div class="newsletter">
-		<div class="parallax_background parallax-window" data-parallax="scroll" data-image-src="images/newsletter.jpg" data-speed="0.8"></div>
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-8 offset-lg-2">
-					<div class="newsletter_content text-center">
-						<div class="newsletter_title_container">
-							<div class="newsletter_title">subscribe to our newsletter</div>
-							<div class="newsletter_subtitle">we won't spam, we promise!</div>
-						</div>
-						<div class="newsletter_form_container">
-							<form action="#" id="newsletter_form" class="newsletter_form">
-								<input type="email" class="newsletter_input" placeholder="your e-mail here" required="required">
-								<button class="newsletter_button">submit</button>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+	
 
 	<!-- Footer -->
 

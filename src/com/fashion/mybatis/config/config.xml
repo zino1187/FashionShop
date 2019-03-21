@@ -6,10 +6,11 @@
 	<typeAliases>
 		<typeAlias type="com.fashion.model.domain.Admin" 				alias="Admin"/>
 		<typeAlias type="com.fashion.model.domain.Topcategory" 		alias="Topcategory"/>
-		<typeAlias type="com.fashion.model.domain.Subcategory" 	alias="Subcategory"/>
-		<typeAlias type="com.fashion.model.domain.Product" 			alias="Product"/>
-		<typeAlias type="com.fashion.model.domain.Cart" 				alias="Cart"/>
+		<typeAlias type="com.fashion.model.domain.Subcategory" 		alias="Subcategory"/>
+		<typeAlias type="com.fashion.model.domain.Product" 				alias="Product"/>
+		<typeAlias type="com.fashion.model.domain.Cart" 					alias="Cart"/>
 		<typeAlias type="com.fashion.model.domain.Customer" 			alias="Customer"/>
+		<typeAlias type="com.fashion.model.domain.Paymethod" 		alias="Paymethod"/>		
 		<typeAlias type="test.Dept" 													alias="Dept"/>
 		<typeAlias type="test.Emp" 													alias="Emp"/>
 	</typeAliases>
@@ -29,6 +30,7 @@
 		<mapper resource="com/fashion/mybatis/mapper/ProductMapper.xml" />
 		<mapper resource="com/fashion/mybatis/mapper/CartMapper.xml" />
 		<mapper resource="com/fashion/mybatis/mapper/CustomerMapper.xml" />
+		<mapper resource="com/fashion/mybatis/mapper/PaymethodMapper.xml" />
 		<mapper resource="com/fashion/mybatis/mapper/DeptMapper.xml" />
 		<mapper resource="com/fashion/mybatis/mapper/EmpMapper.xml" />
 	</mappers>
