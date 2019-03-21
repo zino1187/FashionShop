@@ -48,8 +48,14 @@ function checkAll(obj){
 	}
 }
 function payform(){
-		
+	//결제에 필요한 파라미터를 전송하면서 결제페이지 요청!!
+	$("#cart-form").attr({
+		action:"payment.jsp",
+		method:"post"
+	});
+	$("#cart-form").submit();
 }
+
 </script>
 </head>
 
@@ -363,7 +369,7 @@ function payform(){
 								<div class="cart_buttons_inner ml-auto d-flex flex-row align-items-start justify-content-start flex-wrap">
 									<div class="button button_continue trans_200"><a href="categories.html">continue shopping</a></div>
 									<div class="button button_clear trans_200"><a href="javascript:delCart()">clear cart</a></div>
-									<div class="button button_update trans_200"><a href="categories.html">update cart</a></div>
+									<div class="button button_update trans_200"><a href="">update cart</a></div>
 								</div>
 							</div>
 						</div>

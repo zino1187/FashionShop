@@ -4,7 +4,15 @@
 <%! PaymethodDAO payDAO=new PaymethodDAO(); %>
 <%@ include file="/inc/header.jsp" %>
 <%
+	//상품, 갯수 
+	String[] product_id=request.getParameterValues("product_id");
+	String[] ea=request.getParameterValues("ea");
+	for(int i=0;i<product_id.length;i++){
+		System.out.println("product_id["+i+"]  값은 "+product_id[i]+", ea["+i+"]값은 "+ea[i]);
+	}
+	
 	int total=Integer.parseInt(request.getParameter("total"));
+
 	List<Paymethod> paymethodList=payDAO.selectAll();
 %>
 <!DOCTYPE html>
